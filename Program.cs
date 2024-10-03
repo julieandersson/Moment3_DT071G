@@ -46,6 +46,8 @@ namespace GuestbookApp
                        break;
                    default:
                        Console.WriteLine("Ogiltigt val. Försök igen."); // Felmeddelande om användaren anger annat än 1, 2, x eller X
+                       Console.WriteLine("\nTryck på valfri knapp för att återvända till menyn.");
+                       Console.ReadKey(); // Väntar på knapptryckning
                        break;
         }
     }
@@ -142,6 +144,9 @@ namespace GuestbookApp
         // Tar bort ett inlägg från gästboken
         public static void DeletePost()
         {
+            Console.Clear();
+            DisplayPosts();
+            
             // Kontrollerar om det finns några inlägg att ta bort
             if (guestbookPosts.Count == 0)
             {
@@ -157,29 +162,42 @@ namespace GuestbookApp
             // Användaren får möjlighet att försöka igen om hen anger ett felaktigt nummer, utan att behöva gå tillbaka till menyn
             while (!validInput)
             {
-                // Visar alla inlägg som finns så att användaren kan se vad de vill ta bort
-                DisplayPosts();
-                string input = PromptForInput("Ange numret på inlägget du vill ta bort: ");
 
-                // Kontrollera om input är ett giltigt nummer som motsvarar ett inlägg i listan
-                if (int.TryParse(input, out int index) && index >= 0 && index < guestbookPosts.Count)
+                string input = PromptForInput("Ange numret på inlägget du vill ta bort: ");
+                
+                // Kontrollera om input är ett giltigt index
+                if (int.TryParse(input, out int index))
                 {
+                    // Kontrollera om index motsvarar ett inlägg i listan
+                    if (index >= 0 && index < guestbookPosts.Count)
+                    {
+
                     // Tar bort inlägget
                     guestbookPosts.RemoveAt(index);
                     // Sparar ändringarna till JSONfilen
                     SavePosts();
+
                     // Meddelande att inlägget har tagits bort
+                    Console.Clear();
                     Console.WriteLine("Inlägget har tagits bort.");
                     validInput = true; // Stoppar loopen när giltigt nummer har angetts
 
                 } else {
-                    // Om input inte är giltigt, visa felmeddelande och be användaren att försöka igen 
-                    Console.WriteLine("Numret du angav finns inte. Försök igen.");
+                    // Om input inte motsvarar inlägg i listan, visa felmeddelande och be användaren att försöka igen 
+                    Console.Clear();
+                    DisplayPosts();
+                    Console.WriteLine($"Numret {index} finns inte i listan. Försök igen.");
                 }
+            } else {
+                // Felmeddelande om input inte är ett giltigt tal
+                Console.Clear();
+                DisplayPosts();
+                Console.WriteLine($"'{input}' är inte ett giltigt nummer. Försök igen.");
             }
+        }
 
             ReturnToMenu(); // Går tillbaka till menyn efter att inlägget tagits bort
-         }
+    }
     
         // Avsluta programmet
         public static void ExitProgram()
