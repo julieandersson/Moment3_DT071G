@@ -139,7 +139,47 @@ namespace GuestbookApp
             }
         }
 
-        public static void DeletePost() { }
+        // Tar bort ett inlägg från gästboken
+        public static void DeletePost()
+        {
+            // Kontrollerar om det finns några inlägg att ta bort
+            if (guestbookPosts.Count == 0)
+            {
+                // Om det inte finns några inlägg, skicka meddelande till användaren och återgå till meny
+                Console.WriteLine("Det finns inga inlägg att ta bort.");
+                ReturnToMenu();
+                return; // Om inga inlägg finns, avsluta metoden
+            }
+
+            bool validInput = false; // Kolla om användaren anger ett giltigt nummer
+
+            // Visar inläggslistan tills att användaren anger ett giltigt nummer 
+            // Användaren får möjlighet att försöka igen om hen anger ett felaktigt nummer, utan att behöva gå tillbaka till menyn
+            while (!validInput)
+            {
+                // Visar alla inlägg som finns så att användaren kan se vad de vill ta bort
+                DisplayPosts();
+                string input = PromptForInput("Ange numret på inlägget du vill ta bort: ");
+
+                // Kontrollera om input är ett giltigt nummer som motsvarar ett inlägg i listan
+                if (int.TryParse(input, out int index) && index >= 0 && index < guestbookPosts.Count)
+                {
+                    // Tar bort inlägget
+                    guestbookPosts.RemoveAt(index);
+                    // Sparar ändringarna till JSONfilen
+                    SavePosts();
+                    // Meddelande att inlägget har tagits bort
+                    Console.WriteLine("Inlägget har tagits bort.");
+                    validInput = true; // Stoppar loopen när giltigt nummer har angetts
+
+                } else {
+                    // Om input inte är giltigt, visa felmeddelande och be användaren att försöka igen 
+                    Console.WriteLine("Numret du angav finns inte. Försök igen.");
+                }
+            }
+
+            ReturnToMenu(); // Går tillbaka till menyn efter att inlägget tagits bort
+         }
     
         public static void ExitProgram() { }
     }
