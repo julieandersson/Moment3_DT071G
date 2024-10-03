@@ -181,6 +181,12 @@ namespace GuestbookApp
             ReturnToMenu(); // Går tillbaka till menyn efter att inlägget tagits bort
          }
     
-        public static void ExitProgram() { }
+        // Avsluta programmet
+        public static void ExitProgram()
+        {
+            Console.Clear();
+            Console.WriteLine("Tack för att du använde gästboken. Hejdå!");
+            Environment.Exit(0);
+         }
     }
 }
