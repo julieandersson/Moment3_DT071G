@@ -47,8 +47,52 @@ namespace GuestbookApp
     }
 }
 
+        // Lägger till ett nytt inlägg i gästboken
+        public static void AddPost() 
+        { 
+            Console.Clear(); // Rensar konsoll
+            Post newPost = new Post(); // Skapar nytt postobjekt
 
-        public static void AddPost() { }
+            newPost.Author = PromptForInput("Ange ditt namn: ");
+            newPost.Message = PromptForInput("Skriv ditt inlägg: ");
+
+            guestbookPosts.Add(newPost); // Lägger till det nya inlägget i listan
+
+            SavePosts(); // Sparar alla inlägg
+
+            Console.WriteLine("Inlägget har sparats!"); // Bekräftelse när inlägg har sparats
+            ReturnToMenu();
+        }
+
+        // Metod för att se så att inget fält är tomt
+        public static string PromptForInput(string prompt)
+        {
+            string? input;
+            do
+            {
+                // Inväntar användarens input
+                Console.Write(prompt);
+                input = Console.ReadLine();
+
+                // Om input är tomt, be användaren försöka igen 
+                if (string.IsNullOrEmpty(input))
+                {
+                    Console.WriteLine("Fältet får inte vara tomt. Försök igen.");
+                }
+            } while (string.IsNullOrEmpty(input)); // Fortsätter tills att input inte är tomt
+
+            // Returnerar input när det är giltigt
+            return input;
+        }
+
+        // Visar meddelande och väntar på att användaren ska trycka på valfri knapp
+        public static void ReturnToMenu()
+        {
+            Console.WriteLine("\nTryck på valfri knapp för att återvända till menyn.");
+            Console.ReadKey(); // Väntar på knapptryckning
+        }
+
+
         public static void DeletePost() { }
         public static void DisplayPosts() { }
         public static void SavePosts() { }
