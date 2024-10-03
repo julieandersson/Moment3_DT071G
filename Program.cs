@@ -8,9 +8,11 @@ namespace GuestbookApp
     {
         // Skapar lista för att lagra alla inlägg i gästboken
         private static List<Post> guestbookPosts = new List<Post>();
+        private static string guestbookFile = "guestbookData.json";
 
         static void Main(string[] args)
         {
+            LoadPosts(); // Laddar in sparade inlägg från filen
             MainMenu(); // Visa huvudmenyn
         }
 
@@ -24,6 +26,8 @@ namespace GuestbookApp
                Console.WriteLine("1 - Lägg till inlägg");
                Console.WriteLine("2 - Ta bort inlägg");
                Console.WriteLine("X - Avsluta\n");
+
+               DisplayPosts(); // Visar befintliga inlägg om det finns några
 
                char input = Console.ReadKey(true).KeyChar; // Läser in användarens val
 
@@ -92,11 +96,51 @@ namespace GuestbookApp
             Console.ReadKey(); // Väntar på knapptryckning
         }
 
+        
+        public static void DisplayPosts()
+        { 
+
+            // Rubrik för gästboksinläggen
+            Console.WriteLine("\nG Ä S T B O K S I N L Ä G G\n");
+
+            // Kollar om det finns några inlägg i gästboken
+            if (guestbookPosts.Count == 0)
+            {
+                // Meddelande om inga inlägg hittas
+                Console.WriteLine("Inga inlägg hittades.\n");
+            } else {
+                // Loopar igenom alla inlägg och visar dem med index, namn och meddelande
+                for (int i = 0; i < guestbookPosts.Count; i++)
+                {
+                    Console.WriteLine($"[{i}] {guestbookPosts[i].Author} - {guestbookPosts[i].Message}\n");
+                }
+            }
+        }
+
+        // Sparar alla gästboksinlägg till en JSON-fil
+        public static void SavePosts()
+        { 
+            // Serialiserar listan med inlägg till JSON-format
+            string jsonData = JsonSerializer.Serialize(guestbookPosts, new JsonSerializerOptions { WriteIndented = true});
+            // Skriver ut JSON-datan till filen "guestbookData.json"
+            File.WriteAllText(guestbookFile, jsonData);
+        }
+
+        // Läser in gästboksinläggen från en JSON-fil
+        public static void LoadPosts()
+        { 
+            // Kollar om filen finns
+            if (File.Exists(guestbookFile))
+            {
+               // Läser in data från filen
+                string jsonData = File.ReadAllText(guestbookFile);
+               // Deserialiserar JSON-datan tillbaka till en lista med inlägg
+                guestbookPosts = JsonSerializer.Deserialize<List<Post>>(jsonData) ?? new List<Post>();
+            }
+        }
 
         public static void DeletePost() { }
-        public static void DisplayPosts() { }
-        public static void SavePosts() { }
-        public static void LoadPosts() { }
+    
         public static void ExitProgram() { }
     }
 }
