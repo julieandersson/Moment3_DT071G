@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "Author": "Julie",
+    "Message": "Hejsan, detta \u00E4r min g\u00E4stbok!"
+  },
+  {
+    "Author": "Josefine",
+    "Message": "Hejsan, jag \u00E4r Julies kompis!"
+  },
+  {
+    "Author": "Ida",
+    "Message": "Hejsan, jag \u00E4r Julies barndomskompis!"
+  }
+]

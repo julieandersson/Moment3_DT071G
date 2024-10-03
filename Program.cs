@@ -144,8 +144,8 @@ namespace GuestbookApp
         // Tar bort ett inlägg från gästboken
         public static void DeletePost()
         {
-            Console.Clear();
-            DisplayPosts();
+            Console.Clear(); // rensa skärmen varje gång innan inläggen och frågan visas
+            DisplayPosts(); // Visa inläggen en gång per loop
             
             // Kontrollerar om det finns några inlägg att ta bort
             if (guestbookPosts.Count == 0)
@@ -184,14 +184,10 @@ namespace GuestbookApp
 
                 } else {
                     // Om input inte motsvarar inlägg i listan, visa felmeddelande och be användaren att försöka igen 
-                    Console.Clear();
-                    DisplayPosts();
                     Console.WriteLine($"Numret {index} finns inte i listan. Försök igen.");
                 }
             } else {
                 // Felmeddelande om input inte är ett giltigt tal
-                Console.Clear();
-                DisplayPosts();
                 Console.WriteLine($"'{input}' är inte ett giltigt nummer. Försök igen.");
             }
         }
